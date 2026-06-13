@@ -4,7 +4,7 @@ public class Player : MonoBehaviour
 {
   private Rigidbody _rb;
   private InputHandler _inputHandler;
-  private Vector2 _moveInput;  
+  private Vector2 _moveInput;
 
   [Header("Camera")]
   [SerializeField] private Transform _mainCamera;
@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
   [SerializeField] private int _maxJumps = 2;
   [SerializeField] private float _jumpForce = 15f;
   private int _jumpsRemaining;
-  
+
   [Header("Verficação de Chão")]
   [SerializeField] private Transform _groundCheck;
   [SerializeField] private float _groundCheckRadius = 0.2f;
@@ -34,6 +34,12 @@ public class Player : MonoBehaviour
     {
       _mainCamera = Camera.main.transform;
     }
+  }
+
+  private void Start()
+  {
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
   }
 
   private void OnEnable()
@@ -90,7 +96,7 @@ public class Player : MonoBehaviour
     Vector3 movement = movementDirection * _moveSpeed;
     _rb.linearVelocity = new Vector3(movement.x, _rb.linearVelocity.y, movement.z);
 
-    if(movementDirection != Vector3.zero)
+    if (movementDirection != Vector3.zero)
     {
       Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
       _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime));
@@ -99,7 +105,7 @@ public class Player : MonoBehaviour
 
   private void HandleJump()
   {
-     if (_jumpsRemaining > 0)
+    if (_jumpsRemaining > 0)
     {
       _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
       _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
